@@ -15,11 +15,10 @@ if "responding" not in db.keys():
 
 def random_bike():
     bike = random.choice(motos.modelos)
-    embedVar = discord.Embed(
-        title=bike['modelo'], description=bike['info'], color=0xff6600)
-    # embedVar.add_field(name="Descrição", value=bike['info'], inline=False)
-    embedVar.set_image(url=bike['img_url'])
-    return embedVar
+    embed_msg = discord.Embed(title=bike['modelo'], description=bike['info'], color=0xff6600)
+    # embed_msg.add_field(name="Descrição", value=bike['info'], inline=False)
+    embed_msg.set_image(url=bike['img_url'])
+    return embed_msg
 
 
 def update_images(img_url):
@@ -79,6 +78,18 @@ async def on_message(message):
         msg = f'{message.author.mention}, sua Harley-Davidson é:'
         await message.channel.send(msg, embed=random_bike())
 
+    if message.content.startswith("!fraude"):
+        msg = random.choice(motos.fraudes)
+        await message.channel.send(msg)
+
+    if message.content.startswith("!fome"):
+        msg = random.choice(motos.fome)
+        await message.channel.send(msg)
+
+    if message.content.startswith("K"):
+        msg = random.choice(motos.risadas)
+        await message.channel.send(msg)
+    
     if message.content.startswith("!nota"):
         aluno = message.author.mention
         cadeira = message.content.split("!nota ")[1]

@@ -1,3 +1,31 @@
+risadas = [
+    'calma',
+    'kkkk',
+    'mds',
+    '!limão'
+]
+
+fome = [
+    'presente',
+    'avisa a teu professor aí',
+    'https://imgpile.com/images/7XA1ab.jpg',
+    'desculpa',
+    'não',
+    'manda no chat do meet kkk',
+]
+
+fraudes =  [
+    'https://youtu.be/Vhh_GeBPOhs',
+    'https://images.moneycontrol.com/static-mcnews/2021/01/Bitcoin-1-770x433.jpg',
+    'https://tenor.com/view/touhou-fumo-cirno-meme-distorted-gif-18089576',
+    'https://imgpile.com/images/7s1CYa.png',
+    'https://imgpile.com/images/7s1tnh.png',
+    'https://youtu.be/P_d8g1SZxK0',
+    'https://imgpile.com/images/7s1xtE.png',
+    'não',
+    'sim'
+]
+
 modelos = [
     {
         "modelo":
