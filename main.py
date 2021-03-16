@@ -2,6 +2,7 @@ import discord
 import random
 import os
 import motos
+import requests
 from replit import db
 from servidor import servidor
 
@@ -41,8 +42,12 @@ def list_images():
     images = db["images"]
     lista = ""
     for i in range(len(images)):
-        lista += f"\n{i}: {images[i]}"
-    lista = "```Imagens armazenadas por índice\n" + lista + "```"
+        response = requests.get(images[i])
+        try:
+            response.raise_for_status()
+        except requests.exceptions.HTTPError:
+            lista += f"\n{i}: {images[i]}"
+    lista = "```Imagens bugadas\n" + lista + "```"
     return lista
 
 
