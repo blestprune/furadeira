@@ -8,7 +8,6 @@ risadas = [
 fome = [
     'presente',
     'avisa a teu professor aí',
-    'https://imgpile.com/images/7XA1ab.jpg',
     'desculpa',
     'não',
     'manda no chat do meet kkk',
@@ -22,6 +21,7 @@ fraudes =  [
     'https://imgpile.com/images/7s1tnh.png',
     'https://youtu.be/P_d8g1SZxK0',
     'https://imgpile.com/images/7s1xtE.png',
+    'https://imgpile.com/images/7BHVN4.png',
     'não',
     'sim'
 ]
