@@ -5,7 +5,7 @@ import os
 
 # ----- Cria tabela -----------------------------------------------------------
 
-db_string = os.getenv("DATABASE_URL")
+db_string = os.getenv("DATABASE_URL").replace("postgres", "postgresql")
 
 Base = declarative_base()
 
