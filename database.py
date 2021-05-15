@@ -41,7 +41,7 @@ def todas_frases():
 
 def frase_aleatoria():
     session = DBSession()
-    frase = []
+    frase = ""
     try:
         frase = session.query(Frase).order_by(func.random()).first()
     except:
@@ -53,11 +53,13 @@ def frase_aleatoria():
 
 def deletar_frase(index):
     session = DBSession()
+    msg = ""
     try:
         session.query(Frase).filter(Frase.id == index).delete()
         session.commit()
-        return f"Ok! Apaguei a frase #{index}"
+        msg = f"Ok! Apaguei a frase #{index}"
     except:
-        return "Falhei"
+        msg = "Falhei"
     finally:
         session.close()
+        return msg

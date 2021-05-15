@@ -2,7 +2,6 @@ import random
 import os
 import listas
 import requests
-
 import database as db
 import discord
 from discord import Intents
@@ -22,26 +21,33 @@ slash = SlashCommand(bot, sync_commands=True)
 
 # ----- Utils -----------------------------------------------------------------
 
-def random_bike():
-    bike = random.choice(listas.motos)
-    embed_msg = discord.Embed(title=bike['modelo'],
-                              description=bike['info'],
+def random_moto():
+    moto = random.choice(listas.motos)
+    embed_msg = discord.Embed(title=moto['modelo'],
+                              description=moto['info'],
                               color=0xff6600)
-    embed_msg.set_image(url=bike['img_url'])
+    embed_msg.set_image(url=moto['img_url'])
     return embed_msg
 
 
-def list_images():
+def print_urls():
     frases = db.todas_frases()
-    bugadas = ""
+    for imagem in frases:
+        print(f"{imagem.id} - {imagem.url}")
+
+
+def deletar_bugadas():
+    frases = db.todas_frases()
+    msg = ""
     for imagem in frases:
         response = requests.get(imagem.url)
         try:
             response.raise_for_status()
         except requests.exceptions.HTTPError:
-            bugadas += f"\n{imagem.id}: {imagem.url}"
-    bugadas = "```Imagens bugadas\n" + bugadas + "```"
-    return bugadas
+            msg += f"\n{imagem.id}: {imagem.url}"
+            db.deletar_frase(imagem)
+    msg = "```Imagens bugadas removidas:\n" + msg + "```"
+    return msg
 
 
 def nota_aleatoria(aluno, cadeira):
@@ -76,15 +82,15 @@ async def on_message(message):
 @slash.slash(name="frase",
              description="Escolho uma frase icônica aleatória bem legal")
 async def frase(ctx):
-    frase = db.frase_aleatoria()
-    await ctx.send(content=frase.url)
+    img = db.frase_aleatoria()
+    await ctx.send(content=img.url)
 
 
 @slash.slash(name="harley",
              description="Escolho a Harley-Davidson que você terá daqui a 10 anos")
 async def harley(ctx):
     msg = f'{ctx.author.mention}, sua Harley-Davidson é:'
-    await ctx.send(content=msg, embed=random_bike())
+    await ctx.send(content=msg, embed=random_moto())
 
 
 @slash.slash(name="fraude",
@@ -141,13 +147,18 @@ async def add(ctx):
     for filetype in FILETYPES:
         if filetype in ctx.message.attachments[0].url:
             db.inserir_frase(ctx.message.attachments[0].url)
-            await ctx.send("Imagem adicionada.")
+            await ctx.send(f"Imagem adicionada {ctx.message.attachments[0].url}")
 
 
-@bot.command(brief='Listar imagens')
-async def lista(ctx):
-    await ctx.send(list_images())
+@bot.command(brief='Deleta imagens bugadas')
+async def bugadas(ctx):
+    await ctx.send(deletar_bugadas())
 
+
+@bot.command(brief='Lista imagens')
+async def listar(ctx):
+    print_urls()
+    await ctx.send("Cheque o console")
 
 # ----- Run -------------------------------------------------------------------
 
