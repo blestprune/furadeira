@@ -46,7 +46,10 @@ def deletar_bugadas():
         except requests.exceptions.HTTPError:
             msg += f"\n{imagem.id}: {imagem.url}"
             db.deletar_frase(imagem)
-    msg = "```Imagens bugadas removidas:\n" + msg + "```"
+    if msg != "":
+        msg = "```Imagens bugadas removidas:\n" + msg + "```"
+    else:
+        msg = "Não encontrei nenhuma imagem bugada!"
     return msg
 
 
@@ -120,7 +123,7 @@ async def nota(ctx, cadeira: str):
     await ctx.send(content=nota_aleatoria(aluno, cadeira))
 
 
-@slash.slash(name="deletar",
+@slash.slash(name="zdeletar",
              description="Deletar uma imagem com base no index. Cuidado!",
              options=[
                  create_option(
@@ -130,8 +133,9 @@ async def nota(ctx, cadeira: str):
                      required=True
                  )
              ])
-async def deletar(ctx, index: int):
-    await ctx.send(db.deletar_frase(index))
+async def zdeletar(ctx, index: int):
+    db.deletar_frase(index)
+    await ctx.send(f"Imagem #{index} deletada.")
 
 
 # ----- Bot Prefix Commands ---------------------------------------------------
@@ -147,7 +151,7 @@ async def add(ctx):
     for filetype in FILETYPES:
         if filetype in ctx.message.attachments[0].url:
             db.inserir_frase(ctx.message.attachments[0].url)
-            await ctx.send(f"Imagem adicionada {ctx.message.attachments[0].url}")
+            await ctx.send(f"Imagem adicionada.")
 
 
 @bot.command(brief='Deleta imagens bugadas')
@@ -158,7 +162,7 @@ async def bugadas(ctx):
 @bot.command(brief='Lista imagens')
 async def listar(ctx):
     print_urls()
-    await ctx.send("Cheque o console")
+    await ctx.send("Cheque o app log")
 
 # ----- Run -------------------------------------------------------------------
 

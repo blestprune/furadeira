@@ -23,6 +23,7 @@ def inserir_frase(url):
         session.commit()
     except:
         session.rollback()
+        raise
     finally:
         session.close()
 
@@ -33,7 +34,7 @@ def todas_frases():
     try:
         frases = session.query(Frase)
     except:
-        return frases
+        raise
     finally:
         session.close()
         return frases
@@ -41,11 +42,11 @@ def todas_frases():
 
 def frase_aleatoria():
     session = DBSession()
-    frase = ""
+    frase = None
     try:
         frase = session.query(Frase).order_by(func.random()).first()
     except:
-        return frase
+        raise
     finally:
         session.close()
         return frase
@@ -53,13 +54,11 @@ def frase_aleatoria():
 
 def deletar_frase(index):
     session = DBSession()
-    msg = ""
     try:
         session.query(Frase).filter(Frase.id == index).delete()
         session.commit()
-        msg = f"Ok! Apaguei a frase #{index}"
     except:
-        msg = "Falhei"
+        session.rollback()
+        raise
     finally:
         session.close()
-        return msg
