@@ -6,7 +6,7 @@ import os
 
 # ----- Funções para o banco ------------------------------------------
 
-db_string = os.getenv("DATABASE_URL")
+db_string = os.getenv("DATABASE_URL").replace("postgres", "postgresql")
 
 engine = create_engine(db_string)
 
