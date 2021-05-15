@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import func
 from sqlalchemy_declarative import Base, Frase
-from replit_backup import backup
 import os
 
 # ----- Funções para o banco ------------------------------------------
@@ -27,7 +27,7 @@ def inserir_frase(url):
         session.close()
 
 
-def pegar_frases():
+def todas_frases():
     session = DBSession()
     frases = []
     try:
@@ -37,6 +37,18 @@ def pegar_frases():
     finally:
         session.close()
         return frases
+
+
+def frase_aleatoria():
+    session = DBSession()
+    frase = []
+    try:
+        frase = session.query(Frase).order_by(func.random()).first()
+    except:
+        return frase
+    finally:
+        session.close()
+        return frase
 
 
 def deletar_frase(index):
@@ -49,8 +61,3 @@ def deletar_frase(index):
         return "Falhei"
     finally:
         session.close()
-
-
-def importar_replit():
-    for url in backup:
-        inserir_frase(url)

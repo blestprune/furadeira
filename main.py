@@ -3,7 +3,6 @@ import os
 import listas
 import requests
 
-import sqlalchemy_declarative
 import database as db
 import discord
 from discord import Intents
@@ -33,7 +32,7 @@ def random_bike():
 
 
 def list_images():
-    frases = db.pegar_frases()
+    frases = db.todas_frases()
     bugadas = ""
     for imagem in frases:
         response = requests.get(imagem.url)
@@ -77,7 +76,7 @@ async def on_message(message):
 @slash.slash(name="frase",
              description="Escolho uma frase icônica aleatória bem legal")
 async def frase(ctx):
-    frases = db.pegar_frases()
+    frases = db.todas_frases()
     imagem = random.choice(frases)
     await ctx.send(content=imagem.url)
 
@@ -154,6 +153,4 @@ async def lista(ctx):
 # ----- Run -------------------------------------------------------------------
 
 if __name__ == '__main__':
-    sqlalchemy_declarative.criar_tabela()
-    db.importar_replit()
     bot.run(os.getenv('TOKEN'))
