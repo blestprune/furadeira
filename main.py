@@ -76,9 +76,8 @@ async def on_message(message):
 @slash.slash(name="frase",
              description="Escolho uma frase icônica aleatória bem legal")
 async def frase(ctx):
-    frases = db.todas_frases()
-    imagem = random.choice(frases)
-    await ctx.send(content=imagem.url)
+    frase = db.frase_aleatoria()
+    await ctx.send(content=frase.url)
 
 
 @slash.slash(name="harley",
