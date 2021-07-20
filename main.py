@@ -38,6 +38,15 @@ def print_urls():
 
 def deletar_bugadas():
     frases = db.todas_frases()
+    msg = list_imagens_bugadas(frases)
+    if msg != "":
+        msg = "```Imagens bugadas removidas:\n" + msg + "```"
+    else:
+        msg = "Não encontrei nenhuma imagem bugada!"
+    return msg
+
+
+def list_imagens_bugadas(frases):
     msg = ""
     for imagem in frases:
         response = requests.get(imagem.url)
@@ -46,10 +55,6 @@ def deletar_bugadas():
         except requests.exceptions.HTTPError:
             msg += f"\n{imagem.id}: {imagem.url}"
             db.deletar_frase(imagem)
-    if msg != "":
-        msg = "```Imagens bugadas removidas:\n" + msg + "```"
-    else:
-        msg = "Não encontrei nenhuma imagem bugada!"
     return msg
 
 
@@ -71,7 +76,7 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
-    if message.content.lower().startswith("kkk"):
+    if message.content.lower().startswith("kkk") and random.randint(1, 10) == 1:
         await message.channel.send(random.choice(listas.risadas))
 
     if message.content.lower().startswith("bom dia"):
@@ -163,6 +168,7 @@ async def bugadas(ctx):
 async def listar(ctx):
     print_urls()
     await ctx.send("Cheque o app log")
+
 
 # ----- Run -------------------------------------------------------------------
 
