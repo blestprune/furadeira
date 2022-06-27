@@ -117,7 +117,7 @@ async def harley(ctx):
 @slash.slash(name="fraude",
              description="Escolho uma fraude aleatória")
 async def fraude(ctx):
-    await ctx.send(content=obter_fraude())
+    await ctx.send(embed=obter_fraude())
 
 
 @slash.slash(name="fome",
