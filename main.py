@@ -8,6 +8,7 @@ from discord import Intents
 from discord.ext import commands
 from discord_slash import SlashCommand
 from discord_slash.utils.manage_commands import create_option
+from GoogleNews import GoogleNews
 
 FILETYPES = [".JPG", ".jpg", ".PNG", ".png"]
 
@@ -64,6 +65,18 @@ def nota_aleatoria(aluno, cadeira):
     return resultado
 
 
+def obter_fraude():
+    googlenews = GoogleNews(lang='pt-BR', region='BR', period='1d')
+    googlenews.get_news('fraude')
+    new = random.choice(googlenews.results()[:10])
+    embed_msg = discord.Embed(title='Link',
+                              url=f'https://{new["link"]}',
+                              description=new['title'],
+                              color=discord.Color.blue())
+    embed_msg.set_thumbnail(url=new['img'])
+    return embed_msg
+
+
 # ----- Bot Events ------------------------------------------------------------
 
 @bot.event
@@ -104,7 +117,7 @@ async def harley(ctx):
 @slash.slash(name="fraude",
              description="Escolho uma fraude aleatória")
 async def fraude(ctx):
-    await ctx.send(content=random.choice(listas.fraudes))
+    await ctx.send(content=obter_fraude())
 
 
 @slash.slash(name="fome",
